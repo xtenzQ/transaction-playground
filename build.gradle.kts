@@ -2,8 +2,8 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    id("io.freefair.lombok") version "8.0.1"
-    id("io.freefair.aspectj.post-compile-weaving") version "8.0.1"
+    id("io.freefair.lombok") version "8.4"
+    id("io.freefair.aspectj.post-compile-weaving") version "8.4"
 }
 
 group = "com.xtenzq"
@@ -45,6 +45,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("com.h2database:h2")
 }
 
 tasks.test {
