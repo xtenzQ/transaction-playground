@@ -6,4 +6,5 @@ import lombok.experimental.UtilityClass;
 public class Constants {
     public static final String JDK_PROXY_PROFILE = "jdk-proxy";
     public static final String CGLIB_PROFILE = "cglib";
+    public static final String ASPECTJ_PROFILE = "aspectj";
 }
