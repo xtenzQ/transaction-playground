@@ -1,9 +1,12 @@
 package com.xtenzq.transactionplayground.service;
 
+import static com.xtenzq.transactionplayground.utils.Constants.MANUAL_PROFILE;
+
 import com.xtenzq.transactionplayground.entity.Account;
 import com.xtenzq.transactionplayground.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -13,6 +16,7 @@ import java.math.BigDecimal;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Profile(MANUAL_PROFILE)
 public class ManualAccountService implements AccountService {
 
     private final PlatformTransactionManager transactionManager;

@@ -1,5 +1,6 @@
 package com.xtenzq.transactionplayground.service;
 
+import static com.xtenzq.transactionplayground.utils.Constants.MANUAL_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 
 @SpringBootTest
 @Slf4j
+@ActiveProfiles(MANUAL_PROFILE)
 class ManualAccountServiceTest {
 
     @Autowired
