@@ -32,17 +32,22 @@ public class ManualAccountService implements AccountService {
                 throw new InsufficientFundsException("Not enough money");
             }
 
-            fromAccount.setBalance(fromAccount.getBalance().subtract(money));
-            toAccount.setBalance(toAccount.getBalance().add(money));
-
-            accountRepository.save(fromAccount);
-            accountRepository.save(toAccount);
+            saveTransfer(fromAccount, toAccount, money);
 
             transactionManager.commit(transaction);
         } catch (Exception e) {
             transactionManager.rollback(transaction);
             throw e;
         }
+    }
+
+    private void saveTransfer(Account fromAccount, Account toAccount, BigDecimal money) {
+        log.info("Current transaction name is: \"{}\"", TransactionSynchronizationManager.getCurrentTransactionName());
+        fromAccount.setBalance(fromAccount.getBalance().subtract(money));
+        toAccount.setBalance(toAccount.getBalance().add(money));
+
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
     }
 
     @Override

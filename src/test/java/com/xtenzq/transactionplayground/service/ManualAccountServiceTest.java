@@ -52,7 +52,9 @@ class ManualAccountServiceTest {
 
         // Start a manual transaction to verify transaction state during operation
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setName("ManualTransactionTest");
         TransactionStatus status = transactionManager.getTransaction(def);
+        log.info("Starting transaction with name \"{}\"", TransactionSynchronizationManager.getCurrentTransactionName());
 
         try {
             assertTrue(TransactionSynchronizationManager.isActualTransactionActive(),
