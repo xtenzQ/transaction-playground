@@ -3,9 +3,12 @@ package com.xtenzq.transactionplayground.service;
 import com.xtenzq.transactionplayground.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import java.math.BigDecimal;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -15,6 +18,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void transfer(Long from, Long to, BigDecimal amount) {
+        log.info("Current transaction name is: \"{}\"", TransactionSynchronizationManager.getCurrentTransactionName());
+
         var fromAccount = accountRepository.findById(from)
                 .orElseThrow(() -> new RuntimeException("Account not found: " + from));
         var toAccount = accountRepository.findById(to)
