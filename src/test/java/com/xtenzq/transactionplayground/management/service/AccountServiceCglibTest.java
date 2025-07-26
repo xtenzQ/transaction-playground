@@ -1,15 +1,17 @@
-package com.xtenzq.transactionplayground.service;
+package com.xtenzq.transactionplayground.management.service;
 
-import static com.xtenzq.transactionplayground.utils.Constants.CGLIB_PROFILE;
+import static com.xtenzq.transactionplayground.management.utils.Constants.CGLIB_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.xtenzq.transactionplayground.config.CglibConfig;
-import com.xtenzq.transactionplayground.entity.Account;
-import com.xtenzq.transactionplayground.repository.AccountRepository;
+import com.xtenzq.transactionplayground.management.config.CglibConfig;
+import com.xtenzq.transactionplayground.base.entity.Account;
+import com.xtenzq.transactionplayground.management.service.AccountService;
+import com.xtenzq.transactionplayground.base.exception.InsufficientFundsException;
+import com.xtenzq.transactionplayground.base.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.Advised;

@@ -1,4 +1,4 @@
-package com.xtenzq.transactionplayground.utils;
+package com.xtenzq.transactionplayground.management.utils;
 
 import lombok.experimental.UtilityClass;
 

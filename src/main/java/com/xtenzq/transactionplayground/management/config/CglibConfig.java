@@ -1,6 +1,6 @@
-package com.xtenzq.transactionplayground.config;
+package com.xtenzq.transactionplayground.management.config;
 
-import static com.xtenzq.transactionplayground.utils.Constants.CGLIB_PROFILE;
+import static com.xtenzq.transactionplayground.management.utils.Constants.CGLIB_PROFILE;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

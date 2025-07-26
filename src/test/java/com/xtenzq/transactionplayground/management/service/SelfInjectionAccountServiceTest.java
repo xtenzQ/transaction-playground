@@ -1,9 +1,11 @@
-package com.xtenzq.transactionplayground.service;
+package com.xtenzq.transactionplayground.management.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.xtenzq.transactionplayground.entity.Account;
-import com.xtenzq.transactionplayground.repository.AccountRepository;
+import com.xtenzq.transactionplayground.base.entity.Account;
+import com.xtenzq.transactionplayground.management.service.AccountService;
+import com.xtenzq.transactionplayground.management.service.SelfInjectionAccountService;
+import com.xtenzq.transactionplayground.base.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

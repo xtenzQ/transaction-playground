@@ -1,6 +1,6 @@
-package com.xtenzq.transactionplayground.config;
+package com.xtenzq.transactionplayground.management.config;
 
-import static com.xtenzq.transactionplayground.utils.Constants.ASPECTJ_PROFILE;
+import static com.xtenzq.transactionplayground.management.utils.Constants.ASPECTJ_PROFILE;
 
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Configuration;

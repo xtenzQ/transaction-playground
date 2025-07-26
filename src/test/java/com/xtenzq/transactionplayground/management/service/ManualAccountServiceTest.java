@@ -1,12 +1,13 @@
-package com.xtenzq.transactionplayground.service;
+package com.xtenzq.transactionplayground.management.service;
 
-import static com.xtenzq.transactionplayground.utils.Constants.MANUAL_PROFILE;
+import static com.xtenzq.transactionplayground.management.utils.Constants.MANUAL_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.xtenzq.transactionplayground.entity.Account;
-import com.xtenzq.transactionplayground.repository.AccountRepository;
+import com.xtenzq.transactionplayground.base.entity.Account;
+import com.xtenzq.transactionplayground.management.service.ManualAccountService;
+import com.xtenzq.transactionplayground.base.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

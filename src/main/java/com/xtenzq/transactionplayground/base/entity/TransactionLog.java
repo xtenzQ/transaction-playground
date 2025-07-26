@@ -1,4 +1,4 @@
-package com.xtenzq.transactionplayground.entity;
+package com.xtenzq.transactionplayground.base.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

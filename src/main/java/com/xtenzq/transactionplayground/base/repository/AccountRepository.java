@@ -1,6 +1,6 @@
-package com.xtenzq.transactionplayground.repository;
+package com.xtenzq.transactionplayground.base.repository;
 
-import com.xtenzq.transactionplayground.entity.Account;
+import com.xtenzq.transactionplayground.base.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

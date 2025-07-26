@@ -1,6 +1,6 @@
-package com.xtenzq.transactionplayground.service;
+package com.xtenzq.transactionplayground.management.service;
 
-import static com.xtenzq.transactionplayground.utils.Constants.DELEGATE_PROFILE;
+import static com.xtenzq.transactionplayground.management.utils.Constants.DELEGATE_PROFILE;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

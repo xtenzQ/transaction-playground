@@ -1,4 +1,4 @@
-package com.xtenzq.transactionplayground.service;
+package com.xtenzq.transactionplayground.management.service;
 
 import java.math.BigDecimal;
 
