@@ -3,81 +3,21 @@ package com.xtenzq.transactionplayground.management.service;
 import static com.xtenzq.transactionplayground.management.utils.Constants.MANUAL_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.xtenzq.transactionplayground.base.entity.Account;
-import com.xtenzq.transactionplayground.management.service.ManualAccountService;
-import com.xtenzq.transactionplayground.base.repository.AccountRepository;
+import com.xtenzq.transactionplayground.BaseJUnitTest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-import java.math.BigDecimal;
 
 @SpringBootTest
 @Slf4j
 @ActiveProfiles(MANUAL_PROFILE)
-class ManualAccountServiceTest {
+class ManualAccountServiceTest extends BaseJUnitTest {
 
     @Autowired
     private ManualAccountService manualAccountService;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private PlatformTransactionManager transactionManager;
-
-    private Long fromId;
-    private Long toId;
-
-    @BeforeEach
-    void setUp() {
-        accountRepository.deleteAll();
-        var from = accountRepository.save(new Account("Alice", new BigDecimal("100.0000")));
-        var to = accountRepository.save(new Account("Bob", new BigDecimal("50.0000")));
-        fromId = from.getId();
-        toId = to.getId();
-    }
-
-    @Test
-    void shouldVerifyManualTransactionManagement() {
-        log.info("Testing manual transaction management");
-
-        // Verify that no transaction is active before the operation
-        assertFalse(TransactionSynchronizationManager.isActualTransactionActive(),
-            "No transaction should be active before manual transaction operation");
-
-        // Start a manual transaction to verify transaction state during operation
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setName("ManualTransactionTest");
-        TransactionStatus status = transactionManager.getTransaction(def);
-        log.info("Starting transaction with name \"{}\"", TransactionSynchronizationManager.getCurrentTransactionName());
-
-        try {
-            assertTrue(TransactionSynchronizationManager.isActualTransactionActive(),
-                "Transaction should be active during manual transaction");
-
-            // Perform the transfer within our test transaction
-            manualAccountService.transfer(fromId, toId, new BigDecimal("25.00"));
-
-            // Verify the operation completed successfully
-            assertEquals(new BigDecimal("75.0000"), manualAccountService.getBalance(fromId));
-            assertEquals(new BigDecimal("75.0000"), manualAccountService.getBalance(toId));
-
-            transactionManager.commit(status);
-            log.info("Manual transaction management verified");
-        } catch (Exception e) {
-            transactionManager.rollback(status);
-            throw e;
-        }
-    }
 
     @Test
     void shouldVerifyServiceIsNotProxied() {

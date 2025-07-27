@@ -1,29 +1,22 @@
 package com.xtenzq.transactionplayground.management.service;
 
-import static com.xtenzq.transactionplayground.management.utils.Constants.MANUAL_PROFILE;
-
 import com.xtenzq.transactionplayground.base.entity.Account;
 import com.xtenzq.transactionplayground.base.exception.InsufficientFundsException;
 import com.xtenzq.transactionplayground.base.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import java.math.BigDecimal;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
-@Profile(MANUAL_PROFILE)
-public class ManualAccountService implements AccountService {
+public class ManualAccountService {
 
     private final PlatformTransactionManager transactionManager;
     private final AccountRepository accountRepository;
 
-    @Override
     public void transfer(Long from, Long to, BigDecimal money) {
         var transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
         try {
@@ -55,7 +48,6 @@ public class ManualAccountService implements AccountService {
         accountRepository.save(toAccount);
     }
 
-    @Override
     public BigDecimal getBalance(Long account) {
         return accountRepository.findById(account)
                 .map(Account::getBalance)
