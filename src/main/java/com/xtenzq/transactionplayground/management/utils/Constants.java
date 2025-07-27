@@ -9,4 +9,5 @@ public class Constants {
     public static final String ASPECTJ_PROFILE = "aspectj";
     public static final String MANUAL_PROFILE = "manual";
     public static final String DELEGATE_PROFILE = "delegate";
+    public static final String SELF_PROFILE = "self";
 }
