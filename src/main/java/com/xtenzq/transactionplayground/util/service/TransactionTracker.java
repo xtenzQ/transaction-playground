@@ -3,19 +3,19 @@ package com.xtenzq.transactionplayground.util.service;
 import java.util.Stack;
 
 public class TransactionTracker {
-    private static ThreadLocal<Stack<TransactionContext>> transactionStack = ThreadLocal.withInitial(Stack::new);
-    private static ThreadLocal<Stack<TransactionContext>> history = ThreadLocal.withInitial(Stack::new);
+    private static ThreadLocal<Stack<MethodContext>> transactionStack = ThreadLocal.withInitial(Stack::new);
+    private static ThreadLocal<Stack<MethodContext>> history = ThreadLocal.withInitial(Stack::new);
 
-    public static void push(TransactionContext context) {
+    public static void push(MethodContext context) {
         transactionStack.get().push(context);
         history.get().push(context);
     }
 
-    public static TransactionContext pop() {
+    public static MethodContext pop() {
         return transactionStack.get().pop();
     }
 
-    public static TransactionContext peek() {
+    public static MethodContext peek() {
         return transactionStack.get().peek();
     }
 
@@ -29,13 +29,17 @@ public class TransactionTracker {
 
     public static String getTransactionTree() {
         StringBuilder tree = new StringBuilder();
-        for (TransactionContext context : transactionStack.get()) {
+        for (MethodContext context : transactionStack.get()) {
             tree.append(context.toString()).append("\n");
         }
         return tree.toString();
     }
 
-    public static Stack<TransactionContext> getHistory() {
+    public static Stack<MethodContext> getHistory() {
         return history.get();
+    }
+
+    public static void clearHistory() {
+        history.get().clear();
     }
 }

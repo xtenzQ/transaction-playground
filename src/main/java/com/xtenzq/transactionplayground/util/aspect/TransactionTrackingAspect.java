@@ -1,6 +1,6 @@
 package com.xtenzq.transactionplayground.util.aspect;
 
-import com.xtenzq.transactionplayground.util.service.TransactionContext;
+import com.xtenzq.transactionplayground.util.service.MethodContext;
 import com.xtenzq.transactionplayground.util.service.TransactionTracker;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -16,23 +16,19 @@ import java.lang.reflect.Method;
 @Component
 public class TransactionTrackingAspect {
 
-    private static final String PLATFORM_TRANSACTION_PREFIX = "PlatformTransaction-";
-
-    @Around("@annotation(jakarta.transaction.Transactional) || @annotation(org.springframework.transaction.annotation.Transactional)")
+    @Around("@annotation(jakarta.transaction.Transactional) || " +
+            "@annotation(org.springframework.transaction.annotation.Transactional) || " +
+            "execution(* org.springframework.transaction.PlatformTransactionManager.*(..))")
     public Object trackTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-            return joinPoint.proceed();
-        }
-
         Method methodSignature = getMethod(joinPoint);
         String transactionId = getTransactionId();
         boolean isOuterTransaction = !TransactionTracker.isTransactionActive();
-        TransactionContext parentContext = getParentContext();
+        MethodContext parentContext = getParentContext();
         Class<?> sourceLocation = joinPoint.getSourceLocation().getWithinType();
 
         logMethodInvocation(joinPoint);
 
-        TransactionContext context = new TransactionContext(transactionId, methodSignature, sourceLocation, isOuterTransaction, parentContext);
+        MethodContext context = new MethodContext(transactionId, methodSignature, sourceLocation, isOuterTransaction, parentContext);
         TransactionTracker.push(context);
 
         try {
@@ -42,28 +38,6 @@ public class TransactionTrackingAspect {
             TransactionTracker.pop();
             printTransactionTree();
         }
-    }
-
-    @Around("execution(* org.springframework.transaction.PlatformTransactionManager.*(..))")
-    public Object trackTransactionWithPlatformTransactionManager(ProceedingJoinPoint joinPoint) throws Throwable {
-        Method methodSignature = getMethod(joinPoint);
-        String transactionId = PLATFORM_TRANSACTION_PREFIX + System.nanoTime();
-        boolean isOuterTransaction = !TransactionTracker.isTransactionActive();
-        TransactionContext parentContext = getParentContext();
-        Class<?> sourceLocation = joinPoint.getSourceLocation().getWithinType();
-
-        TransactionContext context = new TransactionContext(transactionId, methodSignature, sourceLocation, isOuterTransaction, parentContext);
-        TransactionTracker.push(context);
-
-        try {
-            logTransactionStart(context);
-            return joinPoint.proceed();
-        } finally {
-            TransactionTracker.pop();
-            printTransactionTree();
-        }
-
-
     }
 
     private Method getMethod(ProceedingJoinPoint joinPoint) throws NoSuchMethodException {
@@ -79,16 +53,18 @@ public class TransactionTrackingAspect {
         return (transactionId != null) ? transactionId : "Transaction-" + System.nanoTime();
     }
 
-    private TransactionContext getParentContext() {
-        return TransactionTracker.isTransactionActive() ? TransactionTracker.peek() : null;
+    private MethodContext getParentContext() {
+        return TransactionTracker.isTransactionActive()
+                ? TransactionTracker.peek().transactionId().equals(getTransactionId()) ? null : TransactionTracker.peek()
+                : null;
     }
 
-    private void logTransactionStart(TransactionContext context) {
+    private void logTransactionStart(MethodContext context) {
         log.info("Transaction Started: {}", context);
     }
 
     private void printTransactionTree() {
-        if (TransactionTracker.isTransactionActive() && TransactionTracker.peek().getParentContext() != null) {
+        if (TransactionTracker.isTransactionActive() && TransactionTracker.peek().parentTransaction() != null) {
             log.info("Transaction Tree:\n{}", TransactionTracker.getTransactionTree());
         }
     }
