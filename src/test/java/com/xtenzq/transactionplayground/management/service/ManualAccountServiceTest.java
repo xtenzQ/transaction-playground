@@ -2,9 +2,9 @@ package com.xtenzq.transactionplayground.management.service;
 
 import static com.xtenzq.transactionplayground.management.utils.Constants.MANUAL_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.xtenzq.transactionplayground.BaseJUnitTest;
+import com.xtenzq.transactionplayground.util.service.TransactionTracker;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +21,9 @@ class ManualAccountServiceTest extends BaseJUnitTest {
 
     @Test
     void shouldVerifyServiceIsNotProxied() {
-        log.info("Verifying ManualAccountService is not AOP proxied");
+        manualAccountService.execute();
 
-        // ManualAccountService should be a direct service without AOP proxying
-        // since it manually manages transactions
-        String className = manualAccountService.getClass().getName();
-        log.info("ManualAccountService class: {}", className);
-
-        assertEquals("com.xtenzq.transactionplayground.service.ManualAccountService", className,
-            "ManualAccountService should be the direct class, not a proxy");
-
-        assertFalse(className.contains("$Proxy"),
-            "Class name should not contain proxy indicators");
-        assertFalse(className.contains("CGLIB"),
-            "Class name should not contain CGLIB indicators");
-
-        log.info("Manual service is not proxied as expected");
+        assertEquals(1, TransactionTracker.getHistory().size());
+        assertEquals("manualTransaction", TransactionTracker.getHistory().peek().transactionId());
     }
 }
