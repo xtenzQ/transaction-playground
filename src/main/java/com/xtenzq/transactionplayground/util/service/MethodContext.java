@@ -7,4 +7,8 @@ public record MethodContext(String transactionId,
                             Class<?> sourceLocation,
                             boolean isOuterTransaction,
                             MethodContext parentTransaction) {
+
+    public String getMethodName() {
+        return executingMethod.getDeclaringClass().getName() + "." + executingMethod.getName();
+    }
 }
