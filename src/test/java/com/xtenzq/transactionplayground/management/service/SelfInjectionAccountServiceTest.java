@@ -1,46 +1,36 @@
 package com.xtenzq.transactionplayground.management.service;
 
+import static com.xtenzq.transactionplayground.management.utils.Constants.SELF_PROFILE;
+import static com.xtenzq.transactionplayground.util.test.MethodNames.getQualifiedMethodName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.xtenzq.transactionplayground.base.entity.Account;
-import com.xtenzq.transactionplayground.management.service.AccountService;
-import com.xtenzq.transactionplayground.management.service.SelfInjectionAccountService;
-import com.xtenzq.transactionplayground.base.repository.AccountRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.xtenzq.transactionplayground.BaseJUnitTest;
+import com.xtenzq.transactionplayground.util.service.TransactionTracker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.math.BigDecimal;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-public class SelfInjectionAccountServiceTest {
+@ActiveProfiles(SELF_PROFILE)
+public class SelfInjectionAccountServiceTest extends BaseJUnitTest {
 
     @Autowired
-    private SelfInjectionAccountService selfInjectionAccountService;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private AccountService accountService;
-
-    private Long fromId;
-    private Long toId;
-
-    @BeforeEach
-    void setUp() {
-        accountRepository.deleteAll();
-        var from = accountRepository.save(new Account("Alice", new BigDecimal("100.0000")));
-        var to = accountRepository.save(new Account("Bob", new BigDecimal("50.0000")));
-        fromId = from.getId();
-        toId = to.getId();
-    }
+    protected SelfInjectionAccountService selfInjectionAccountService;
 
     @Test
-    void testTransactionViaSelfInjection() {
-        selfInjectionAccountService.transfer(fromId, toId, new BigDecimal("25.00"));
+    void testTransactionInAPrivateMethod() {
+        selfInjectionAccountService.outer();
 
-        assertEquals(new BigDecimal("75.0000"), accountService.getBalance(fromId));
-        assertEquals(new BigDecimal("75.0000"), accountService.getBalance(toId));
+        var latestMethod = TransactionTracker.getHistory();
+
+        assertEquals(
+                getQualifiedMethodName(SelfInjectionAccountService.class, "outer"),
+                latestMethod.get(0).executingMethod().getDeclaringClass().getName() + "." + latestMethod.get(0).executingMethod().getName()
+        );
+        assertEquals(
+                getQualifiedMethodName(SelfInjectionAccountService.class, "inner"),
+                latestMethod.get(2).executingMethod().getDeclaringClass().getName() + "." + latestMethod.get(2).executingMethod().getName()
+        );
     }
 }

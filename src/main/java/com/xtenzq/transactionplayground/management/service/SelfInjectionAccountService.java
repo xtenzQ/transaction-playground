@@ -1,51 +1,32 @@
 package com.xtenzq.transactionplayground.management.service;
 
-import com.xtenzq.transactionplayground.base.exception.InsufficientFundsException;
-import com.xtenzq.transactionplayground.base.repository.AccountRepository;
-import jakarta.transaction.Transactional;
+import static com.xtenzq.transactionplayground.management.utils.Constants.SELF_PROFILE;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Profile;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-import java.math.BigDecimal;
 
 @Slf4j
-@Service
+@Profile(SELF_PROFILE)
 @RequiredArgsConstructor
 public class SelfInjectionAccountService {
 
     private final ApplicationContext applicationContext;
-    private final AccountRepository accountRepository;
 
-    public String transfer(Long from, Long to, BigDecimal money) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public String outer() {
         var transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
-        log.info("Public transaction name is: \"{}\"", transactionName);
         SelfInjectionAccountService proxy = applicationContext.getBean(SelfInjectionAccountService.class);
-        proxy.selfTransfer(from, to, money);
+        proxy.inner();
         return transactionName;
     }
 
-    @Transactional
-    public String selfTransfer(Long from, Long to, BigDecimal amount) {
-        var fromAccount = accountRepository.findById(from)
-                .orElseThrow(() -> new RuntimeException("Account not found: " + from));
-        var toAccount = accountRepository.findById(to)
-                .orElseThrow(() -> new RuntimeException("Account not found: " + to));
-
-        if (fromAccount.getBalance().compareTo(amount) < 0) {
-            throw new InsufficientFundsException("Not enough money");
-        }
-
-        fromAccount.setBalance(fromAccount.getBalance().subtract(amount));
-        toAccount.setBalance(toAccount.getBalance().add(amount));
-
-        accountRepository.save(fromAccount);
-        accountRepository.save(toAccount);
-
-        var transactionName = TransactionSynchronizationManager.getCurrentTransactionName();
-        log.info("Private transfer transaction name is: \"{}\"", transactionName);
-
-        return TransactionSynchronizationManager.getCurrentTransactionName();
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void inner() {
+        log.info("Current transaction name is: \"{}\"", TransactionSynchronizationManager.getCurrentTransactionName());
     }
 }
