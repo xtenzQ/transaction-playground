@@ -6,12 +6,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.xtenzq.transactionplayground.BaseJUnitTest;
 import com.xtenzq.transactionplayground.base.entity.Account;
 import com.xtenzq.transactionplayground.base.exception.InsufficientFundsException;
+import com.xtenzq.transactionplayground.base.repository.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+
 import java.math.BigDecimal;
 
 @SpringBootTest
@@ -20,6 +22,9 @@ public abstract class BaseAccountServiceTest extends BaseJUnitTest {
 
     @Autowired
     protected AccountService accountService;
+
+    @Autowired
+    protected AccountRepository accountRepository;
 
     @Autowired
     protected ApplicationContext applicationContext;
@@ -31,6 +36,7 @@ public abstract class BaseAccountServiceTest extends BaseJUnitTest {
     void setUp() {
         super.setup();
         log.info("Setting up test data");
+        accountRepository.deleteAll();
         var from = accountRepository.save(new Account("Alice", new BigDecimal("100.0000")));
         var to = accountRepository.save(new Account("Bob", new BigDecimal("50.0000")));
         fromId = from.getId();

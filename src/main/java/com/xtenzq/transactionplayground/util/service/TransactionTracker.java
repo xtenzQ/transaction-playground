@@ -4,13 +4,11 @@ import java.util.Stack;
 
 public class TransactionTracker {
     private static ThreadLocal<Stack<MethodContext>> transactionStack = ThreadLocal.withInitial(Stack::new);
-    private static final Stack<MethodContext> history = new Stack<>();
+    private static ThreadLocal<Stack<MethodContext>> history = ThreadLocal.withInitial(Stack::new);
 
     public static void push(MethodContext context) {
         transactionStack.get().push(context);
-        synchronized (history) {
-            history.push(context);
-        }
+        history.get().push(context);
     }
 
     public static MethodContext pop() {
@@ -38,14 +36,10 @@ public class TransactionTracker {
     }
 
     public static Stack<MethodContext> getHistory() {
-        synchronized (history) {
-            return (Stack<MethodContext>) history.clone();
-        }
+        return history.get();
     }
 
     public static void clearHistory() {
-        synchronized (history) {
-            history.clear();
-        }
+        history.get().clear();
     }
 }
