@@ -2,9 +2,9 @@ package com.xtenzq.transactionplayground.management.service;
 
 import com.xtenzq.transactionplayground.base.exception.InsufficientFundsException;
 import com.xtenzq.transactionplayground.base.repository.AccountRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 @Slf4j

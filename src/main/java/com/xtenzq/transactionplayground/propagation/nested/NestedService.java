@@ -4,6 +4,7 @@ import static com.xtenzq.transactionplayground.propagation.utils.Constants.NESTE
 
 import com.xtenzq.transactionplayground.base.entity.TransactionLog;
 import com.xtenzq.transactionplayground.base.repository.TransactionLogRepository;
+import com.xtenzq.transactionplayground.propagation.requirenew.RequireNewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;

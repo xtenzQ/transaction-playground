@@ -2,7 +2,7 @@ package com.xtenzq.transactionplayground.management.service;
 
 import static com.xtenzq.transactionplayground.management.utils.Constants.DELEGATE_PROFILE;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

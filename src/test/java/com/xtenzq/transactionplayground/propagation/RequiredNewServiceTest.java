@@ -3,6 +3,7 @@ package com.xtenzq.transactionplayground.propagation;
 import static com.xtenzq.transactionplayground.propagation.utils.Constants.REQUIRED_NEW_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.xtenzq.transactionplayground.BaseJUnitTest;
 import com.xtenzq.transactionplayground.base.entity.TransactionLog;
 import com.xtenzq.transactionplayground.base.repository.TransactionLogRepository;
 import com.xtenzq.transactionplayground.propagation.requirenew.RequireNewService;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @ActiveProfiles(REQUIRED_NEW_PROFILE)
 @SpringBootTest
-public class RequiredNewServiceTest {
+public class RequiredNewServiceTest extends BaseJUnitTest {
 
     @Autowired
     private RequireNewService requireNewService;
