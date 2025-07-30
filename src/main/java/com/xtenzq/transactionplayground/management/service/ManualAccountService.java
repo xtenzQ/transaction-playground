@@ -29,12 +29,12 @@ public class ManualAccountService {
                                     TransactionSynchronizationManager.getCurrentTransactionName()
                             ) ? null : TransactionTracker.peek() : null)
             );
-            log.info("Transaction started...");
-        } catch (Exception e) {
-            transactionManager.rollback(transaction);
-        } finally {
             transactionManager.commit(transaction);
             log.info("Transaction committed.");
+        } catch (Exception e) {
+            transactionManager.rollback(transaction);
+            log.info("Transaction rolled back.");
+            throw new RuntimeException();
         }
     }
 }
