@@ -20,6 +20,10 @@ public class TransactionTrackingAspect {
             "@annotation(org.springframework.transaction.annotation.Transactional) || " +
             "execution(* org.springframework.transaction.PlatformTransactionManager.*(..))")
     public Object trackTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+            log.warn("No real transaction active. Skipping transaction tracking.");
+            return joinPoint.proceed();
+        }
         Method methodSignature = getMethod(joinPoint);
         String transactionId = getTransactionId();
         boolean isOuterTransaction = !TransactionTracker.isTransactionActive();

@@ -3,6 +3,7 @@ package com.xtenzq.transactionplayground.propagation;
 import static com.xtenzq.transactionplayground.propagation.utils.Constants.NESTED_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.xtenzq.transactionplayground.BaseJUnitTest;
 import com.xtenzq.transactionplayground.base.entity.TransactionLog;
 import com.xtenzq.transactionplayground.base.repository.TransactionLogRepository;
 import com.xtenzq.transactionplayground.propagation.nested.NestedService;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles(NESTED_PROFILE)
-public class NestedServiceTest {
+public class NestedServiceTest extends BaseJUnitTest {
 
     @Autowired
     private NestedService nestedService;

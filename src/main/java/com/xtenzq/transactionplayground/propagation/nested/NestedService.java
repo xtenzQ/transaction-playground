@@ -4,6 +4,7 @@ import static com.xtenzq.transactionplayground.propagation.utils.Constants.NESTE
 
 import com.xtenzq.transactionplayground.base.entity.TransactionLog;
 import com.xtenzq.transactionplayground.base.repository.TransactionLogRepository;
+import com.xtenzq.transactionplayground.propagation.requirenew.RequireNewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Profile;
@@ -26,7 +27,7 @@ public class NestedService {
         TransactionLog logOuter = new TransactionLog(null, null, null, new BigDecimal("100.00"), "OUTER", LocalDateTime.now());
         transactionLogRepository.save(logOuter);
 
-        var proxy = applicationContext.getBean(NestedService.class);
+        var proxy = applicationContext.getBean(RequireNewService.class);
         try {
             proxy.inner();
         } catch (Exception e) {
