@@ -32,6 +32,9 @@ public class ManualAccountService {
             log.info("Transaction started...");
         } catch (Exception e) {
             transactionManager.rollback(transaction);
+        } finally {
+            transactionManager.commit(transaction);
+            log.info("Transaction committed.");
         }
     }
 }
