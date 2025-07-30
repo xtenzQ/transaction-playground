@@ -10,4 +10,5 @@ public class Constants {
     public static final String NEVER_PROFILE = "never";
     public static final String NOT_SUPPORTED_PROFILE = "not-supported";
     public static final String SUPPORTS_PROFILE = "supports";
+    public static final String NESTED_PROFILE = "nested";
 }
