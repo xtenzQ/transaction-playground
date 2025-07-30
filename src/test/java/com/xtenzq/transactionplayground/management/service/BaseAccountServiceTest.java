@@ -34,6 +34,7 @@ public abstract class BaseAccountServiceTest extends BaseJUnitTest {
 
     @BeforeEach
     void setUp() {
+        super.setup();
         log.info("Setting up test data");
         accountRepository.deleteAll();
         var from = accountRepository.save(new Account("Alice", new BigDecimal("100.0000")));

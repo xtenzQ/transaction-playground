@@ -7,12 +7,12 @@ import org.junit.jupiter.api.BeforeEach;
 public abstract class BaseJUnitTest {
 
     @BeforeEach
-    void setup() {
+    public void setup() {
         TransactionTracker.clearHistory();
     }
 
     @AfterEach
-    void clearTransactionHistory() {
+    public void clearTransactionHistory() {
         TransactionTracker.clearHistory();
     }
 }

@@ -27,7 +27,7 @@ public class NestedService {
         TransactionLog logOuter = new TransactionLog(null, null, null, new BigDecimal("100.00"), "OUTER", LocalDateTime.now());
         transactionLogRepository.save(logOuter);
 
-        var proxy = applicationContext.getBean(RequireNewService.class);
+        var proxy = applicationContext.getBean(NestedService.class);
         try {
             proxy.inner();
         } catch (Exception e) {
