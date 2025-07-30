@@ -1,10 +1,11 @@
-package com.xtenzq.transactionplayground.propagation.never;
+package com.xtenzq.transactionplayground.propagation;
 
 import static com.xtenzq.transactionplayground.propagation.utils.Constants.NEVER_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.xtenzq.transactionplayground.BaseJUnitTest;
+import com.xtenzq.transactionplayground.propagation.never.NeverService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
